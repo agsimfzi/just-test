@@ -28,13 +28,13 @@ const findAll = async (req, res, next) => {
                 } else {
                     opts.where.createdAt = {
                         [Op.and]: [
-                            { [Op.gt]: range[0] },
-                            { [Op.lt]: range[1] },
+                            { [Op.gte]: range[0] },
+                            { [Op.lte]: range[1] },
                         ],
                     }
                 }
             } else {
-                opts.where.createdAt = { [Op.eq]: range[0] }
+                opts.where.createdAt = { [Op.between]: [`${range[0]} 00:00:00`, `${range[0] } 23:59:59`] }
             }
         }
 

@@ -7,8 +7,8 @@ const router = require('./router')
 const jwtStrategy = require('./middleware/jwt_strategy')
 const errorHandler = require('./middleware/error_handler')
 const { swaggerUiServe, swaggerUiSetup } = require('./middleware/swagger_ui_setup')
-const app = express();
-const port = process.env.PORT || 8000
+const app = express()
+const port = 8000
 
 app.disable('x-powered-by')
 app.use(morgan('combined'))

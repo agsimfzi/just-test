@@ -61,8 +61,7 @@ router.route('/')
         body('content').notEmpty().trim(),
         articleController.create
     )
-    
-    router.route('/')
+
     /**
      * @swagger
      *
@@ -97,7 +96,7 @@ router.route('/')
      *          name: createdAt
      *          schema:
      *            type: string
-     *          description: Filter by Range of Date
+     *          description: Filter by Range of YYYY-MM-DD:YYYY-MM-DD or :YYYY-MM-DD or YYYY-MM-DD:(ex. 2024-01-01:2024-12-31 or :2024-12-31 or 2024-01-01:)
      *        - in: query
      *          name: sortBy
      *          schema:

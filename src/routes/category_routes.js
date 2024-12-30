@@ -51,7 +51,7 @@ router.route('/')
         body('name').notEmpty().trim(),
         categoryController.create
     )
-    router.route('/')
+
     /**
      * @swagger
      *

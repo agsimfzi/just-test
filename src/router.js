@@ -2,6 +2,7 @@ const expres = require('express')
 const authRoutes = require('./routes/auth_routes')
 const categoriesRoutes = require('./routes/category_routes')
 const articlesRoutes = require('./routes/article_routes')
+const homeRoutes = require('./routes/home_routes')
 
 const router = expres.Router()
 
@@ -17,6 +18,10 @@ routeGroups = [
     {
         path: '/articles',
         routes: articlesRoutes,
+    },
+    {
+        path: '/home',
+        routes: homeRoutes,
     },
 ]
 
