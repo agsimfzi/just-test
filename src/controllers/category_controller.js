@@ -13,7 +13,7 @@ const findAll = async (req, res, next) => {
 
 const findById = async (req, res, next) => {
     try {
-        const category = await Category.findByPk(req.params.id)
+        const category = await Category.findByPk(req.params.id, { include: 'articles' })
         res.send(category)
     } catch (err) {
         next(err)
@@ -65,16 +65,10 @@ const update = async (req, res, next) => {
 
 const remove = async (req, res, next) => {
     try {
-        const result = await Category.destroy({
+        await Category.destroy({
             where: { id: req.params.id },
             force: true,
         });
-
-        if (result === 0) {
-            return res.status(404).json({
-                msg: "Category with that ID not found",
-            });
-        }
 
         res.status(204).json()
     } catch (err) {

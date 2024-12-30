@@ -13,16 +13,16 @@ const router = expres.Router()
  *       properties:
  *         categoryId:
  *           type: string
- *           description: The username.
- *           example: iamuser
+ *           description: The category ID.
+ *           example: e0837562-fbe7-4c51-b49b-122163d314b9
  *         title:
  *           type: string
- *           description: The password.
- *           example: 123
+ *           description: The title.
+ *           example: What Does a Software Engineer Do?
  *         content:
  *           type: string
- *           description: The password.
- *           example: 123
+ *           description: The content.
+ *           example: Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
  */
 
 /**
@@ -52,11 +52,10 @@ router.route('/')
      *             $ref: '#/components/schemas/Article'
      *     responses:
      *       200:
-     *         description: login
+     *         description: Article
      */
     .post(
         auth('Admin'),
-        body('userId').notEmpty().trim(),
         body('categoryId').notEmpty().trim(),
         body('title').notEmpty().trim(),
         body('content').notEmpty().trim(),
@@ -73,9 +72,40 @@ router.route('/')
      *     description: Get all articles
      *     produces:
      *       - application/json
+     *     parameters:
+     *        - in: query
+     *          name: articleId
+     *          schema:
+     *            type: string
+     *          description: Filter by Article ID
+     *        - in: query
+     *          name: userId
+     *          schema:
+     *            type: string
+     *          description: Filter by User ID
+     *        - in: query
+     *          name: categoryId
+     *          schema:
+     *            type: string
+     *          description: Filter by Article ID
+     *        - in: query
+     *          name: search
+     *          schema:
+     *            type: string
+     *          description: Filter by Search in Title
+     *        - in: query
+     *          name: createdAt
+     *          schema:
+     *            type: string
+     *          description: Filter by Range of Date
+     *        - in: query
+     *          name: sortBy
+     *          schema:
+     *            type: string
+     *          description: Sort by query in the form of field1,field2:desc/asc,field2:desc/asc or content-length (ex. createdAt:desc,title:asc,content-length)
      *     responses:
      *       200:
-     *         description: login
+     *         description: List of Articles
      */
     .get(articleController.findAll)
 
@@ -88,7 +118,7 @@ router.route('/:id')
      *     security:
      *      - bearerAuth: []
      *     tags: [Article]
-     *     description: Create the article
+     *     description: Get the article
      *     produces:
      *       - application/json
      *     parameters:
@@ -98,28 +128,29 @@ router.route('/:id')
      *          schema:
      *            type: string
      *          description: Article ID
-     *     requestBody:
-     *       required: true
-     *       content:
-     *         application/json:
-     *           schema:
-     *             $ref: '#/components/schemas/Article'
      *     responses:
      *       200:
-     *         description: login
+     *         description: Article
      */
     .get(articleController.findById)
         /**
      * @swagger
      *
      * /articles/{id}:
-     *   post:
+     *   put:
      *     security:
      *      - bearerAuth: []
      *     tags: [Article]
-     *     description: Create the article
+     *     description: Update the article
      *     produces:
      *       - application/json
+     *     parameters:
+     *        - in: path
+     *          name: id
+     *          required: true
+     *          schema:
+     *            type: string
+     *          description: Category ID
      *     requestBody:
      *       required: true
      *       content:
@@ -128,7 +159,7 @@ router.route('/:id')
      *             $ref: '#/components/schemas/Article'
      *     responses:
      *       200:
-     *         description: login
+     *         description: Article
      */
     .put(articleController.update)
         /**
@@ -140,9 +171,16 @@ router.route('/:id')
      *      - bearerAuth: []
      *     tags: [Article]
      *     description: Delete the article
+     *     parameters:
+     *        - in: path
+     *          name: id
+     *          required: true
+     *          schema:
+     *            type: string
+     *          description: Category ID
      *     responses:
-     *       200:
-     *         description: Delete Article
+     *       204:
+     *         description: No content
      */
     .delete(articleController.remove)
 

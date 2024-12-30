@@ -1,9 +1,56 @@
-const { Article } = require('../models')
+const { Op, fn, col } = require('sequelize')
 const { validationResult } = require('express-validator')
+const { Article } = require('../models')
 
 const findAll = async (req, res, next) => {
     try {
-        const articles = await Article.findAll()
+        const opts = { include: 'category', where: {}, order: [] }
+
+        if (req.query.articleId) {
+            opts.where.id = req.query.articleId
+        }
+        if (req.query.userId) {
+            opts.where.userId = req.query.userId
+        }
+        if (req.query.search) {
+            opts.where.title = { [Op.like]: `%${req.query.search}%` }
+        }
+        if (req.query.categoryId) {
+            opts.where.categoryId = req.query.categoryId
+        }
+        if (req.query.createdAt) {
+            const range = req.query.createdAt.split(':')
+            if (range.length > 1) {
+                if (range[0] === '') {
+                    opts.where.createdAt = { [Op.lte]: range[1] }
+                } else if (range[1] === '') {
+                    opts.where.createdAt = { [Op.gte]: range[0] }
+                } else {
+                    opts.where.createdAt = {
+                        [Op.and]: [
+                            { [Op.gt]: range[0] },
+                            { [Op.lt]: range[1] },
+                        ],
+                    }
+                }
+            } else {
+                opts.where.createdAt = { [Op.eq]: range[0] }
+            }
+        }
+
+        if (req.query.sortBy) {
+            const allSortBy = req.query.sortBy.split(',')
+            allSortBy.forEach(item => {
+                const sortByItem = item.split(':')
+
+                if (sortByItem.length > 1) {
+                    opts.order = [...opts.order, [sortByItem[0], sortByItem[1]]]
+                } else if (item === 'content-length') {
+                    opts.order = [...opts.order, [fn('LENGTH', col('content')), 'ASC']]
+                }
+            })
+        }
+        const articles = await Article.findAll(opts)
 
         res.send(articles)
     } catch (err) {
@@ -13,7 +60,7 @@ const findAll = async (req, res, next) => {
 
 const findById = async (req, res, next) => {
     try {
-        const article = await Article.findByPk(req.params.id)
+        const article = await Article.findByPk(req.params.id, { include: ['category', 'user'] })
         res.send(article)
     } catch (err) {
         next(err)
@@ -65,16 +112,10 @@ const update = async (req, res, next) => {
 
 const remove = async (req, res, next) => {
     try {
-        const result = await Article.destroy({
+        await Article.destroy({
             where: { id: req.params.id },
             force: true,
         });
-
-        if (result === 0) {
-            return res.status(404).json({
-                msg: "Article with that ID not found",
-            });
-        }
 
         res.status(204).json()
     } catch (err) {

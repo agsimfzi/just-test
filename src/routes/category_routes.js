@@ -13,7 +13,7 @@ const router = expres.Router()
  *       properties:
  *         name:
  *           type: string
- *           description: The password.
+ *           description: The name.
  *           example: Software Engineer
  */
 
@@ -86,12 +86,6 @@ router.route('/:id')
      *          schema:
      *            type: string
      *          description: Category ID
-     *     requestBody:
-     *       required: true
-     *       content:
-     *         application/json:
-     *           schema:
-     *             $ref: '#/components/schemas/Category'
      *     responses:
      *       200:
      *         description: Category
@@ -101,13 +95,20 @@ router.route('/:id')
      * @swagger
      *
      * /categories/{id}:
-     *   post:
+     *   put:
      *     security:
      *      - bearerAuth: []
      *     tags: [Category]
-     *     description: Create the category
+     *     description: Update the category
      *     produces:
      *       - application/json
+     *     parameters:
+     *        - in: path
+     *          name: id
+     *          required: true
+     *          schema:
+     *            type: string
+     *          description: Category ID
      *     requestBody:
      *       required: true
      *       content:
@@ -136,8 +137,8 @@ router.route('/:id')
      *            type: string
      *          description: Category ID
      *     responses:
-     *       200:
-     *         description: Delete Category
+     *       204:
+     *         description: No content
      */
     .delete(categoryController.remove)
 

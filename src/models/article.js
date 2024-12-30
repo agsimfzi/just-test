@@ -27,5 +27,18 @@ module.exports = (sequelize, DataTypes) => {
     sequelize,
     modelName: 'Article',
   });
+
+  Article.associate = models => {
+    Article.belongsTo(models.Category, {
+      as: 'category',
+      foreignKey: 'categoryId'
+    })
+
+    Article.belongsTo(models.User, {
+      as: 'user',
+      foreignKey: 'userId'
+    })
+  }
+
   return Article;
 };
