@@ -12,7 +12,6 @@ module.exports = {
       username: {
         type: Sequelize.STRING(100),
         allowNull: false,
-        unique: true,
       },
       role: {
         type: Sequelize.ENUM,
