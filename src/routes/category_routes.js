@@ -1,34 +1,26 @@
 const expres = require('express')
 const { body } = require('express-validator')
 const auth = require('../middleware/auth')
-const articleController = require('../controllers/article_controller')
+const categoryController = require('../controllers/category_controller')
 
 const router = expres.Router()
 /**
  * @swagger
  * components:
  *   schemas:
- *     Article:
+ *     Category:
  *       type: object
  *       properties:
- *         categoryId:
- *           type: string
- *           description: The username.
- *           example: iamuser
- *         title:
+ *         name:
  *           type: string
  *           description: The password.
- *           example: 123
- *         content:
- *           type: string
- *           description: The password.
- *           example: 123
+ *           example: Software Engineer
  */
 
 /**
  * @swagger
  *  tags:
- *    name: Article
+ *    name: Category
  *    description: list of articles
  */
 
@@ -36,12 +28,12 @@ router.route('/')
     /**
      * @swagger
      *
-     * /articles:
+     * /categories:
      *   post:
      *     security:
      *      - bearerAuth: []
-     *     tags: [Article]
-     *     description: Create the article
+     *     tags: [Category]
+     *     description: Create the category
      *     produces:
      *       - application/json
      *     requestBody:
@@ -49,44 +41,41 @@ router.route('/')
      *       content:
      *         application/json:
      *           schema:
-     *             $ref: '#/components/schemas/Article'
+     *             $ref: '#/components/schemas/Category'
      *     responses:
      *       200:
-     *         description: login
+     *         description: Category
      */
     .post(
         auth('Admin'),
-        body('userId').notEmpty().trim(),
-        body('categoryId').notEmpty().trim(),
-        body('title').notEmpty().trim(),
-        body('content').notEmpty().trim(),
-        articleController.create
+        body('name').notEmpty().trim(),
+        categoryController.create
     )
     router.route('/')
     /**
      * @swagger
      *
-     * /articles:
+     * /categories:
      *   get:
-     *     tags: [Article]
-     *     description: Get all articles
+     *     tags: [Category]
+     *     description: Get all categories
      *     produces:
      *       - application/json
      *     responses:
      *       200:
-     *         description: login
+     *         description: Category
      */
-    .get(articleController.findAll)
+    .get(categoryController.findAll)
 
 router.route('/:id')
     /**
      * @swagger
      *
-     * /articles/{id}:
-     *   post:
+     * /categories/{id}:
+     *   get:
      *     security:
      *      - bearerAuth: []
-     *     tags: [Article]
+     *     tags: [Category]
      *     description: Create the article
      *     produces:
      *       - application/json
@@ -96,27 +85,27 @@ router.route('/:id')
      *          required: true
      *          schema:
      *            type: string
-     *          description: Article ID
+     *          description: Category ID
      *     requestBody:
      *       required: true
      *       content:
      *         application/json:
      *           schema:
-     *             $ref: '#/components/schemas/Article'
+     *             $ref: '#/components/schemas/Category'
      *     responses:
      *       200:
-     *         description: login
+     *         description: Category
      */
-    .get(articleController.findById)
+    .get(categoryController.findById)
         /**
      * @swagger
      *
-     * /articles/{id}:
+     * /categories/{id}:
      *   post:
      *     security:
      *      - bearerAuth: []
-     *     tags: [Article]
-     *     description: Create the article
+     *     tags: [Category]
+     *     description: Create the category
      *     produces:
      *       - application/json
      *     requestBody:
@@ -124,25 +113,32 @@ router.route('/:id')
      *       content:
      *         application/json:
      *           schema:
-     *             $ref: '#/components/schemas/Article'
+     *             $ref: '#/components/schemas/Category'
      *     responses:
      *       200:
-     *         description: login
+     *         description: Category
      */
-    .put(articleController.update)
+    .put(categoryController.update)
         /**
      * @swagger
      *
-     * /articles/{id}:
+     * /categories/{id}:
      *   delete:
      *     security:
      *      - bearerAuth: []
-     *     tags: [Article]
-     *     description: Delete the article
+     *     tags: [Category]
+     *     description: Delete the category
+     *     parameters:
+     *        - in: path
+     *          name: id
+     *          required: true
+     *          schema:
+     *            type: string
+     *          description: Category ID
      *     responses:
      *       200:
-     *         description: Delete Article
+     *         description: Delete Category
      */
-    .delete(articleController.remove)
+    .delete(categoryController.remove)
 
 module.exports = router

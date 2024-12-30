@@ -27,7 +27,7 @@ const create = async (req, res, next) => {
             return res.status(400).send({ errors: result.array() })
         }
 
-        const article = await Article.create(req.body)
+        const article = await Article.create({ userId: req.user.id, ...req.body })
         res.status(201).send(article)
     } catch (err) {
         next(err)
@@ -45,7 +45,7 @@ const update = async (req, res, next) => {
             { ...req.body, updatedAt: Date.now() },
             {
                 where: {
-                    id: req.params.noteId,
+                    id: req.params.id,
                 },
             }
         )

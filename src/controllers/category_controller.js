@@ -26,7 +26,7 @@ const create = async (req, res, next) => {
         if (!result.isEmpty()) {
             return res.status(400).send({ errors: result.array() })
         }
-        const category = await Category.create(req.body)
+        const category = await Category.create({ userId: req.user.id, ...req.body })
 
         res.status(201).send(category)
     } catch (err) {
@@ -45,7 +45,7 @@ const update = async (req, res, next) => {
             { ...req.body, updatedAt: Date.now() },
             {
                 where: {
-                    id: req.params.noteId,
+                    id: req.params.id,
                 },
             }
         )

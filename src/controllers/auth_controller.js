@@ -39,7 +39,7 @@ const login = async (req, res, next) => {
         const payload = {
             sub: user.id,
             iat: moment().unix(),
-            exp: moment().add(900, 'minutes').unix(),
+            exp: moment().add(9000, 'minutes').unix(),
             type: 'access'
         }
         const token = jwt.sign(payload, 'secret')

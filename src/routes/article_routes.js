@@ -62,6 +62,7 @@ router.route('/')
         body('content').notEmpty().trim(),
         articleController.create
     )
+    
     router.route('/')
     /**
      * @swagger
@@ -83,7 +84,7 @@ router.route('/:id')
      * @swagger
      *
      * /articles/{id}:
-     *   post:
+     *   get:
      *     security:
      *      - bearerAuth: []
      *     tags: [Article]
