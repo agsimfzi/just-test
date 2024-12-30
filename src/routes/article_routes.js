@@ -160,7 +160,13 @@ router.route('/:id')
      *       200:
      *         description: Article
      */
-    .put(articleController.update)
+    .put(
+        auth('Admin'),
+        body('categoryId').notEmpty().trim(),
+        body('title').notEmpty().trim(),
+        body('content').notEmpty().trim(),
+        articleController.update
+    )
         /**
      * @swagger
      *
@@ -181,6 +187,6 @@ router.route('/:id')
      *       204:
      *         description: No content
      */
-    .delete(articleController.remove)
+    .delete(auth('Admin'), articleController.remove)
 
 module.exports = router
