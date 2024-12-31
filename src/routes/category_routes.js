@@ -47,7 +47,7 @@ router.route('/')
      *         description: Category
      */
     .post(
-        auth('Admin'),
+        auth({ roles: ['Admin'] }),
         body('name').notEmpty().trim(),
         categoryController.create
     )
@@ -120,7 +120,7 @@ router.route('/:id')
      *         description: Category
      */
     .put(
-        auth('Admin'),
+        auth({ roles: ['Admin'] }),
         body('name').notEmpty().trim(),
         categoryController.update
     )
@@ -144,6 +144,6 @@ router.route('/:id')
      *       204:
      *         description: No content
      */
-    .delete(auth('Admin'), categoryController.remove)
+    .delete(auth({ roles: ['Admin'] }), categoryController.remove)
 
 module.exports = router

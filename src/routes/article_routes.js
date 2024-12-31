@@ -2,6 +2,7 @@ const expres = require('express')
 const { body } = require('express-validator')
 const auth = require('../middleware/auth')
 const articleController = require('../controllers/article_controller')
+const { Article } = require('../models')
 
 const router = expres.Router()
 /**
@@ -55,7 +56,7 @@ router.route('/')
      *         description: Article
      */
     .post(
-        auth('Admin'),
+        auth({ roles: ['Admin'] }),
         body('categoryId').notEmpty().trim(),
         body('title').notEmpty().trim(),
         body('content').notEmpty().trim(),
@@ -161,7 +162,7 @@ router.route('/:id')
      *         description: Article
      */
     .put(
-        auth('Admin'),
+        auth({ roles: ['Admin'], model: Article }),
         body('categoryId').notEmpty().trim(),
         body('title').notEmpty().trim(),
         body('content').notEmpty().trim(),
@@ -187,6 +188,6 @@ router.route('/:id')
      *       204:
      *         description: No content
      */
-    .delete(auth('Admin'), articleController.remove)
+    .delete(auth({ roles: ['Admin'], model: Article }), articleController.remove)
 
 module.exports = router

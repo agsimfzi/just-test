@@ -85,6 +85,6 @@ router.post('/login', body('username').notEmpty().trim(), body('password').notEm
  *       200:
  *         description: profile
  */
-router.get('/profile', auth('Admin', 'User'), authController.profile)
+router.get('/profile', auth({ roles: ['Admin', 'User'] }), authController.profile)
 
 module.exports = router
