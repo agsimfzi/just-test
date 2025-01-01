@@ -30,7 +30,7 @@ const verifyCallback = (req, resolve, reject, opts) => async (err, user, info) =
     reject(new Error('Forbidden'))
 }
 
-const auth = (opts) => async (req, res, next) => {
+const auth = (opts = {}) => async (req, res, next) => {
     return new Promise((resolve, reject) => {
         passport.authenticate('jwt', { session: false }, verifyCallback(req, resolve, reject, opts))(req, res, next)
     })
