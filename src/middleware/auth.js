@@ -23,6 +23,8 @@ const verifyCallback = (req, resolve, reject, opts) => async (err, user, info) =
                 return resolve()
             }
         }
+    } else {
+        return resolve()
     }
 
     reject(new Error('Forbidden'))
